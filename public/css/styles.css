@@ -274,7 +274,9 @@ section {
   display: flex;
   align-items: center;
   justify-content: space-around;
-  background-color: #f8f8f8;
+  background-image: url("/images/vehicles/delorean.jpg");
+  background-size: cover; /* or contain, depending on your preference */
+  background-position: center;
   padding: 1em;
   border-radius: 10px;
 }
