@@ -110,9 +110,16 @@ h2 {
   background-repeat: no-repeat;
   background-size: contain;
   background-position: center;
+  overflow: hidden;
   margin-left: auto;
   margin-right: auto;
   display: flex;
+}
+#hero img.delorean-img {
+  max-width: 400px;
+  height: auto;
+  border-radius: 10px;
+  width:50%;
 }
 
 #hero h2 {
@@ -275,7 +282,7 @@ section {
   align-items: center;
   justify-content: space-around;
   background-image: url("/images/vehicles/delorean.jpg");
-  background-size: cover; /* or contain, depending on your preference */
+  background-size: contain; /* or contain, depending on your preference */
   background-position: center;
   padding: 1em;
   border-radius: 10px;
