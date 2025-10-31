@@ -1,15 +1,20 @@
 const express = require('express')
-const path = require("path")
+const expressLayouts = require("express-ejs-layouts")
+const env = require("dotenv").config()
 const app = express()
+const static = require("./routes/static")
 
+//expressejs
 app.set ("view engine", "ejs")
-app.set ("views", path.join(__dirname, "views"))
+app.use(expressLayouts)
+app.set("layout","./layouts/layout")
 
-app.use(express.static(path.join(__dirname,"public")))
-
-app.get("/", (req,res) =>{
-    res.render("index")
+//routes
+app.use(static)
+//index route
+app.use("/", (req,res) =>{
+    res.render("index", {title: "Home"})
 })
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5500;
 app.listen(PORT, () => console.log(`server is listening at http://localhost:${PORT}`))
