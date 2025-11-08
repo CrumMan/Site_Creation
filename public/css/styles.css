@@ -319,6 +319,17 @@ section {
   padding: 1em;
   border-radius: 10px;
 }
+.car-stuff{
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+.car-img{
+  grid-column: 1/2;
+}
+.car-details{
+  grid-column: 2/3;
+  padding:0px 15px;
+}
 
 #hero img.delorean-img {
   max-width: 400px;

@@ -5,7 +5,7 @@ const app = express()
 const static = require("./routes/static")
 const Util = require("./utilities"); // assuming your getNav is here
 const inventoryRoute = require("./routes/inventoryRoute");
-
+const indexRoute = require("./routes/index")
 
 //expressejs
 app.set ("view engine", "ejs")
@@ -14,30 +14,18 @@ app.set("layout","./layouts/layout")
 
 //routes
 app.use(static)
+//index route
+app.use(indexRoute)
 
 // Inventory routes
 app.use("/inv", inventoryRoute);
-
-//index route
-app.use("/", async (req, res) => {
-  try {
-    const navHTML = await Util.getNav(req, res); // calls getNav()
-    res.render("index", { title: "Home", nav: navHTML });
-  } catch (err) {
-    console.error("Error generating navigation:", err);
-    res.render("index", { title: "Home", nav: "<ul></ul>" });
-  }
-});
 
 // File Not Found Route - must be last route in list
 app.use(async (req, res, next) => {
   next({status: 404, message: 'Sorry, we appear to have lost that page.'})
 })
 
-/* ***********************
-* Express Error Handler
-* Place after all other middleware
-*************************/
+// Error Handler to display in local
 app.use(async (err, req, res, next) => {
   let nav = await Util.getNav()
   console.error(`Error at: "${req.originalUrl}": ${err.message}`)

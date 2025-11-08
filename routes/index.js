@@ -1,4 +1,7 @@
 const baseController = require("../controllers/baseController");
-
+const express = require("express")
+const router = express.Router()
 // Index route
-application.get("/", baseController.buildHome)
+router.get("/", baseController.buildHome)
+
+module.exports = router

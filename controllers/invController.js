@@ -7,19 +7,26 @@ const invCont = {}
  *  Build inventory by classification view
  * ************************** */
 invCont.buildByClassificationId = async function (req, res, next) {
-  const classification_id = req.params.classificationId
-  const data = await invModel.getInventoryByClassificationId(classification_id)
-  const grid = await utilities.buildClassificationGrid(data)
-  let nav = await utilities.getNav()
-  const className = data[0].classification_name
-  res.render("./inventory/classification", {
-    title: className + " vehicles",
-    nav,
-    grid,
-  })
+    try{
+    const classification_id = req.params.classificationId
+    const data = await invModel.getInventoryByClassificationId(classification_id)
+    const grid = await utilities.buildClassificationGrid(data)
+    let nav = await utilities.getNav()
+    const className = data[0].classification_name
+    res.render("./inventory/classification", {
+      title: className + " vehicles",
+      nav,
+      grid,
+    })
+  }
+  catch(err){
+    console.error("Error generating navigation:", err);
+    res.render("index", { title: "Home", nav: "<ul></ul>" })
+  }
 }
 
 invCont.buildByInventoryId = async function (req, res, next) {
+    try{
     const inventory_id = req.params.inventory_id
     const car = await invModel.getByInventoryId(inventory_id)
 
@@ -35,6 +42,11 @@ invCont.buildByInventoryId = async function (req, res, next) {
       nav,
       car
     })
+  }
+  catch{
+    console.error("Error generating navigation:", err);
+    res.render("index", { title: "Home", nav: "<ul></ul>" })
+  }
 }
 
   module.exports = invCont
