@@ -64,6 +64,15 @@ nav {
   color: var(--primary-background);
 }
 
+  nav ul li a{
+    text-decoration: none;
+    color: #fff;
+  }
+nav ul li a:hover{
+    text-decoration: none;
+    color: #000;
+    background-color:#01b0d3;
+  }
 nav ul {
   display: flex;
   padding: 0 1vw;
@@ -217,6 +226,26 @@ section {
   margin-top: 1em;
 }
 /* END index.ejs styles */
+#inv-display {
+    list-style-type: none; /* removes bullets */
+    padding: 0;            /* removes default padding */
+    margin: 0;             /* removes default margin */
+    text-decoration: none;
+  }
+#inv-display li hr {
+  text-decoration: none;
+  border: none;
+  height: 0;
+  margin: 0;
+}
+#inv-display li a {
+  text-decoration: none; 
+  color: #000;
+}
+
+#inv-display li a:hover {
+  text-decoration: underline; /* optional: show underline on hover */
+}
 
 @media only screen and (min-width: 768px) {
   body {
@@ -258,6 +287,9 @@ section {
     margin: 0;
     padding: 0;
     text-align: center;
+  }
+  nav ul li a{
+    text-decoration: none;
   }
   /* END navigation.ejs style */
 
