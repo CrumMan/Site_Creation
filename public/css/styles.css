@@ -182,7 +182,9 @@ h2 {
 section ul {
   padding: 0 0 0 1rem;
 }
-
+.car-stuff{
+  margin: 5px;
+}
 #review li {
   font-size: 0.9em;
   margin-bottom: 1em;

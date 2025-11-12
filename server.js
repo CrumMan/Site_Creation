@@ -2,8 +2,10 @@ const express = require('express')
 const expressLayouts = require("express-ejs-layouts")
 const env = require("dotenv").config()
 const app = express()
+
 const static = require("./routes/static")
 const Util = require("./utilities"); // assuming your getNav is here
+
 const inventoryRoute = require("./routes/inventoryRoute");
 const indexRoute = require("./routes/index")
 
@@ -14,8 +16,8 @@ app.set("layout","./layouts/layout")
 
 //routes
 app.use(static)
-//index route
-app.use(indexRoute)
+
+app.use("/", indexRoute)
 
 // Inventory routes
 app.use("/inv", inventoryRoute);
