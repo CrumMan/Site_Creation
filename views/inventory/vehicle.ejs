@@ -7,7 +7,7 @@
         <h1> <%= car.inv_make %> <%= car.inv_model %></h1>
         <p> Year: <%= car.inv_year %></p>
         <p>Price: $<%= Number(car.inv_price).toLocaleString("en-US") %></p>
-        <p>Miles: <%= car.inv_miles %></p>
+        <p>Miles: <%= Number(car.inv_miles).toLocaleString("en-US") %></p>
         <p>Color: <%= car.inv_color %></p>
         <p>Description: <%= car.inv_description %> </p>
     </div>
