@@ -1,0 +1,53 @@
+<h1><%= title %></h1>
+
+<%- messages() %>
+<% if (errors) { %>
+  <ul class="notice">
+ <% errors.array().forEach(error => { %>
+   <li><%= error.msg %></li>
+<%  }) %>
+ </ul>
+<% } %>
+
+<div id="registration_form">
+    <form id="add_vehicle_form" action="/inv" method="post">
+        
+        <label for="inv_make">Make:</label>
+        <input id="inv_make" 
+        type="text" name="inv_make" required>
+        
+        <label for="inv_model">Model:</label>
+        <input id="inv_model" 
+        type="text" name="inv_model" required>
+        
+        <label for="inv_year">Year:</label>
+        <input id="inv_year" 
+        type="number" name="inv_year" required>
+
+        <label for="inv_description">Description:</label>
+        <textarea 
+        id="inv_description" 
+        type="text" 
+        name="inv_description"  
+        rows="5"
+        required>
+      </textarea>
+
+        <label for="inv_price">Price:</label>
+        <input id="inv_price" 
+        type="number" name="inv_price" required>
+        
+        <label for="inv_miles">miles:</label>
+        <input id="inv_miles" 
+        type="number" name="inv_miles" required>
+        
+
+        <label for="inv_color">Color:</label>
+        <input id="inv_color" 
+        type="text" name="inv_color" required>
+        <label for="classification_id">Vehicle classification:</label>
+        <%- select_form %>
+        <button id="register_button" type="submit">Register</button>
+
+</form>
+</div>

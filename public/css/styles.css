@@ -27,7 +27,10 @@ body {
   margin-right: auto;
   padding-bottom: 1em;
 }
-
+/* messages */
+.notice{
+  color: red;
+}
 /* BEGIN header.ejs styles */
 header > img {
   max-width: 40%;
@@ -249,6 +252,74 @@ section {
   text-decoration: underline; /* optional: show underline on hover */
 }
 
+/* FOR ACCOUNT EJS */
+#account_form{
+  display: flex;
+  flex-direction:column;
+  justify-content: center;
+  justify-self: center;
+  justify-items: center;
+  background-color:#242333;
+  color: white;
+  padding: 20px;
+  border-radius: 15px;
+}
+#account_inputs{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-width: 200px;
+  gap: 10px;
+}
+#register_here_a{
+  text-decoration: underline;
+  color: white;
+}
+
+/* For Registration*/
+#registration_form{
+  display: flex;
+  flex-direction:column;
+  justify-content: center;
+  justify-self: center;
+  justify-items: center;
+  background-color:white;
+  color: #242333;
+  padding: 20px;
+  border: 2px solid #242333;
+  border-radius: 15px;
+}
+#registration_inputs{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-width: 200px;
+  gap: 10px;
+}
+#register_button{
+  color: white;
+  background-color:#01b0d3;
+  width: 30%;
+  min-width: fit-content;
+  border-radius: 5px;
+  padding: 5px;
+  margin: 0 35% 0;
+}
+/* for Inventory ejs */
+#add_vehicle_form{
+  display: flex;
+  flex-direction:column;
+  justify-content: center;
+  justify-self: center;
+  justify-items: center;
+  background-color:white;
+  color: #242333;
+  padding: 20px;
+  min-width: 400px;
+}
+#inv_description{
+  min-height: 5rem;
+}
 @media only screen and (min-width: 768px) {
   body {
     background-image: linear-gradient(45deg, #000 25%, transparent 25%),
@@ -302,6 +373,7 @@ section {
     margin-left: 2em;
     margin-top: 1em;
   }
+  
 
   #actionbtn {
     display: block;

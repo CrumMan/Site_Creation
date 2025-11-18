@@ -16,7 +16,8 @@ invCont.buildByClassificationId = async function (req, res, next) {
     res.render("./inventory/classification", {
       title: className + " vehicles",
       nav,
-      grid
+      grid,
+      errors: null,
     })
 }
 
@@ -30,7 +31,68 @@ invCont.buildByInventoryId = async function (req, res, next) {
     res.render("./inventory/vehicle", {
       title: vehicleName,
       nav,
-      car
+      car,
+      errors: null,
     })
 }
+
+invCont.manageInventoryForm = async function (req, res, next) {
+  const nav = await utilities.getNav()
+  const select_form = await utilities.buildClassificationList()
+  res.render("./inventory/addInv",{
+    title : "Add Regestration",
+    nav,
+    select_form,
+    errors: null,
+  })
+}
+
+invCont.RegisterInventory = async function (req, res, next){
+  let nav = await utilities.getNav()
+  const select_form = await utilities.buildClassificationList()
+  const { 
+    inv_make, 
+    inv_model, 
+    inv_year, 
+    inv_description, 
+    inv_price, 
+    inv_miles, 
+    inv_color,
+    classification_id
+
+  } = req.body
+
+  const regResult = await invModel.registerVehicle(
+    inv_make, 
+    inv_model, 
+    inv_year, 
+    inv_description, 
+    inv_price, 
+    inv_miles, 
+    inv_color,
+    classification_id
+  )
+
+  if (regResult) {
+    req.flash(
+      "notice",
+      `Congratulations, you've added a ${inv_make} ${inv_model}.`
+    )
+     return res.status(201).render("inventory/addInv", {
+      title: "Vehicle Registered!",
+      nav,
+      select_form,
+      errors:null,
+    })
+  } else {
+    req.flash("notice", "Sorry, the registration failed.")
+    res.status(501).render("inventory/addInv", {
+      title: "Vehicle Registration",
+      nav,
+      select_form,
+      errors:null,
+    })
+  }
+}
+
   module.exports = invCont
