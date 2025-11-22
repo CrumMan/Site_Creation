@@ -59,6 +59,15 @@ invCont.manageInventoryForm = async function (req, res, next) {
   })
 }
 
+invCont.manageClassificationForm = async function (req, res, next) {
+  const nav = await utilities.getNav()
+  res.render("classifications/addClassification",{
+    title: "Add a Classification",
+    nav,
+    errors: null
+  })
+}
+
 invCont.RegisterInventory = async function (req, res, next){
   let nav = await utilities.getNav()
   const { 
@@ -92,8 +101,8 @@ invCont.RegisterInventory = async function (req, res, next){
     ) 
     const data = await invModel.getWholeInventory()
     const grid = await utilities.buildClassificationGrid(data)
-    return res.status(201).render("./inventory/allInv",{
-      title: "Inventory",
+    return res.status(201).render("inventory/allInv",{
+      title: "Manage Inventory",
       nav,
       grid,
       errors:null,
@@ -106,6 +115,33 @@ invCont.RegisterInventory = async function (req, res, next){
       nav,
       select_form,
       errors:null,
+    })
+  }
+}
+
+invCont.registerClassification = async function (req, res, next) {
+  const nav = await utilities.getNav()
+  const{classification_name} = req.body
+  const regResult = await invModel.registerClassification(classification_name)
+
+  if(regResult){
+    const data = await invModel.getWholeInventory()
+    const grid = await utilities.buildClassificationGrid(data)
+    req.flash( 'notice',`${classification_name} Classification Added`)
+    res.status(501).render("inventory/allInv",{
+      title : "Manage Inventory",
+      nav,
+      grid,
+      errors:null,
+    })
+  }
+  else{
+    req.flash("notice", "Sorry, the adding a classification failed.")
+    res.status(501).render("classifications/addClassification", {
+      Title : "Add a Classification",
+      nav,
+      errors:null,
+
     })
   }
 }

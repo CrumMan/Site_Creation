@@ -1,0 +1,21 @@
+<h1><%= title %></h1>
+
+<%- messages() %>
+<% if (errors) { %>
+  <ul class="notice">
+ <% errors.array().forEach(error => { %>
+   <li><%= error.msg %></li>
+<%  }) %>
+ </ul>
+<% } %>
+
+<div id="registration_form">
+    <form id="add_vehicle_form" action="/inv/addClassification" method="post">
+        
+        <label for="classification_id">Classifiation:</label>
+        <input id="classification_name" 
+        type="text" name="classification_name" required>
+        <button id="register_button" type="submit">Register</button>
+
+</form>
+</div>
