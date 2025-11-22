@@ -36,11 +36,23 @@ invCont.buildByInventoryId = async function (req, res, next) {
     })
 }
 
+invCont.buildInventory = async function (req, res, next) {
+  const nav = await utilities.getNav()
+  const data = await invModel.getWholeInventory()
+  const grid = await utilities.buildClassificationGrid(data)
+  res.render("./inventory/allInv",{
+    title: "Inventory",
+    nav,
+    grid,
+    errors:null,
+  })
+}
+
 invCont.manageInventoryForm = async function (req, res, next) {
   const nav = await utilities.getNav()
   const select_form = await utilities.buildClassificationList()
   res.render("./inventory/addInv",{
-    title : "Add Regestration",
+    title : "Add Vehicle Registration",
     nav,
     select_form,
     errors: null,
@@ -49,7 +61,6 @@ invCont.manageInventoryForm = async function (req, res, next) {
 
 invCont.RegisterInventory = async function (req, res, next){
   let nav = await utilities.getNav()
-  const select_form = await utilities.buildClassificationList()
   const { 
     inv_make, 
     inv_model, 
@@ -59,9 +70,9 @@ invCont.RegisterInventory = async function (req, res, next){
     inv_miles, 
     inv_color,
     classification_id
-
+    
   } = req.body
-
+  
   const regResult = await invModel.registerVehicle(
     inv_make, 
     inv_model, 
@@ -72,19 +83,23 @@ invCont.RegisterInventory = async function (req, res, next){
     inv_color,
     classification_id
   )
-
+  
+  
   if (regResult) {
     req.flash(
       "notice",
       `Congratulations, you've added a ${inv_make} ${inv_model}.`
-    )
-     return res.status(201).render("inventory/addInv", {
-      title: "Vehicle Registered!",
+    ) 
+    const data = await invModel.getWholeInventory()
+    const grid = await utilities.buildClassificationGrid(data)
+    return res.status(201).render("./inventory/allInv",{
+      title: "Inventory",
       nav,
-      select_form,
+      grid,
       errors:null,
     })
   } else {
+    const select_form = await utilities.buildClassificationList()
     req.flash("notice", "Sorry, the registration failed.")
     res.status(501).render("inventory/addInv", {
       title: "Vehicle Registration",

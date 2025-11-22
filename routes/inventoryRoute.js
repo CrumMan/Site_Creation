@@ -10,8 +10,9 @@ router.get("/type/:classificationId", utilities.handleErrors(invController.build
 // Route to build single vehicle in inventory
 router.get("/detail/:inventory_id", utilities.handleErrors(invController.buildByInventoryId))
 
-router.get("/", utilities.handleErrors(invController.manageInventoryForm))
+router.get("/", utilities.handleErrors(invController.buildInventory))
 
-router.post("/",vehValidate.vehicleRules(),vehValidate.checkVehicleData,utilities.handleErrors(invController.RegisterInventory))
+router.get("/addInv", utilities.handleErrors(invController.manageInventoryForm))
+router.post("/addInv",vehValidate.vehicleRules(),vehValidate.checkVehicleData,utilities.handleErrors(invController.RegisterInventory))
 
 module.exports = router;

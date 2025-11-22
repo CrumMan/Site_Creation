@@ -32,10 +32,12 @@ const utilities = require(".")
         // inv_description is reqired and must be a string
         body("inv_description")
         .trim()
-        .escape()
         .notEmpty()
+        .withMessage("Please provide a description.")
         .isLength({ min: 10 })
-        .withMessage("Please provide a description."),
+        .withMessage("Description must be at least 10 characters long")
+        .escape(),
+
         // inv_price is required and must be numeric
       body("inv_price")
         .trim()
@@ -52,14 +54,14 @@ const utilities = require(".")
         .notEmpty()
         .isNumeric()
         .isLength({ min: 1})
-        .withMessage("Please provide a price."), // on error this message is sent.
+        .withMessage("Please provide how many Miles."), // on error this message is sent.
       // inv_price is required and must be string
         body("inv_color")
         .trim()
         .escape()
         .notEmpty()
         .isLength({ min: 3 })
-        .withMessage("Please provide a model."),
+        .withMessage("Please provide a Color."),
         //vehicle_classification
         body("classification_id")
         .trim()
@@ -76,28 +78,33 @@ const utilities = require(".")
  * Check data and return errors or continue to registration
  * ***************************** */
 validate.checkVehicleData = async (req, res, next) => {
-  const { inv_make,
-inv_model,
-inv_year,
-inv_description,
-inv_price,
-inv_miles,
-inv_color} = req.body
+  const { 
+    inv_make,
+    inv_model,
+    inv_year,
+    inv_description,
+    inv_price,
+    inv_miles,
+    inv_color,
+    classification_id
+} = req.body
   let errors = []
   errors = validationResult(req)
   if (!errors.isEmpty()) {
     let nav = await utilities.getNav()
+    const select_form = await utilities.buildClassificationList()
     res.render("inventory/addInv", {
       errors,
-      title: "Registration",
+      title: "Vehicle Registration",
       nav,
+      select_form,
       inv_make,
       inv_model,
       inv_year,
       inv_description,
       inv_price,
       inv_miles,
-      inv_color
+      inv_color,
     })
     return
   }

@@ -10,7 +10,7 @@
 <% } %>
 
 <div id="registration_form">
-    <form id="add_vehicle_form" action="/inv" method="post">
+    <form id="add_vehicle_form" action="/inv/addInv" method="post">
         
         <label for="inv_make">Make:</label>
         <input id="inv_make" 
@@ -26,10 +26,10 @@
 
         <label for="inv_description">Description:</label>
         <textarea 
-        id="inv_description" 
-        type="text" 
+        id="inv_description"  
         name="inv_description"  
         rows="5"
+        minlength="10"
         required>
       </textarea>
 
@@ -47,6 +47,7 @@
         type="text" name="inv_color" required>
         <label for="classification_id">Vehicle classification:</label>
         <%- select_form %>
+        
         <button id="register_button" type="submit">Register</button>
 
 </form>

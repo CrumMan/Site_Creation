@@ -320,6 +320,24 @@ section {
 #inv_description{
   min-height: 5rem;
 }
+
+.add_inventory_button{
+  text-decoration: none;
+  color:white;
+  padding: 10px;
+  background-color: #242333;
+  margin: 10px;
+}
+.inv_button_holder{
+  display: flex;
+  justify-content: center;
+  margin: 10px;
+}
+.grid_holder{
+  display: flex;
+  justify-items: center;
+}
+
 @media only screen and (min-width: 768px) {
   body {
     background-image: linear-gradient(45deg, #000 25%, transparent 25%),
