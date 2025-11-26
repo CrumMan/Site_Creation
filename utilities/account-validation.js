@@ -210,9 +210,6 @@ validate.checkEditPasswordRules =  async (req,res,next) => {
   const {account_id, account_type, account_password} = req.body
   let errors = []
   errors = validationResult(req)
-  
- console.log('Password validation errors:', errors.array())  // ✅ Add this
-  console.log('req.body:', req.body)  // ✅ Add this
 
   if (!errors.isEmpty()){
     const nav = await utilities.getNav()

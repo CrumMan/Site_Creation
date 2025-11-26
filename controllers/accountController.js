@@ -146,7 +146,6 @@ async function logoutOfAccount(req, res){
 async function editAccountView(req, res, next){
     const user= res.locals.accountData
     const nav = await utilities.getNav()
- console.log('editAccountView - user:', user)
     res.render("account/edit-account",{
       title: "Edit Account",
       nav,
@@ -185,11 +184,9 @@ async function editAccountInfo(req,res,next){
 }
 
 async function editPassword(req, res, next) {
-   console.log('editPassword called', req.body)
     let hashedPassword
     const { account_id, 
             account_password } = req.body
-     console.log('account_id:', account_id, 'account_password:', account_password)
     try{
       hashedPassword = await bcrypt.hashSync(account_password, 10)
     }
