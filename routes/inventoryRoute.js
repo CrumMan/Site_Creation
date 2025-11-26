@@ -29,9 +29,9 @@ router.post("/addClassification", utilities.checkCredentials, classValidate.clas
 
 
 //update inventory routes
-router.get("/edit/:inv_id", utilities.handleErrors(invController.editInventoryView))
-router.post("/update/", vehUpdateValidate.vehicleRules(), vehUpdateValidate.checkVehicleData, utilities.handleErrors(invController.updateInventory))
+router.get("/edit/:inv_id", utilities.checkCredentials, utilities.handleErrors(invController.editInventoryView))
+router.post("/update/", vehUpdateValidate.vehicleRules(), vehUpdateValidate.checkVehicleData, utilities.checkCredentials, utilities.handleErrors(invController.updateInventory))
 //delete inventory
-router.get("/delete/:inv_id", utilities.handleErrors(invController.deleteInventoryView))
-router.post("/delete", utilities.handleErrors(invController.deleteVehicle))
+router.get("/delete/:inv_id", utilities.checkCredentials, utilities.handleErrors(invController.deleteInventoryView))
+router.post("/delete", utilities.checkCredentials, utilities.handleErrors(invController.deleteVehicle))
 module.exports = router;
