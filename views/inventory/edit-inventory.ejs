@@ -1,0 +1,67 @@
+<h1><%= title %></h1>
+
+<%- messages() %>
+<% if (errors) { %>
+  <ul class="notice">
+ <% errors.array().forEach(error => { %>
+   <li><%= error.msg %></li>
+<%  }) %>
+ </ul>
+<% } %>
+
+<div id="registration_form">
+    <form id="add_vehicle_form" action="/inv/update" method="post">
+        
+        <label for="inv_make">Make:</label>
+        <input id="inv_make" 
+        type="text" name="inv_make" value="<%- inv_make %>" required>
+        
+        <label for="inv_model">Model:</label>
+        <input id="inv_model" 
+        type="text" name="inv_model" value="<%- inv_model %>" required>
+        
+        <label for="inv_year">Year:</label>
+        <input id="inv_year" 
+        type="number" name="inv_year" value="<%- inv_year %>" required>
+
+        <label for="inv_description">Description:</label>
+        <textarea 
+        id="inv_description"  
+        name="inv_description"  
+        rows="5"
+        minlength="10"
+        required><%- inv_description %>
+      </textarea>
+
+        <label for="inv_image">Image:</label>
+        <input id="inv_price" 
+        type="text" name="inv_image" value="<%- inv_image %>">
+        
+        <label for="inv_thumbnail">Thumbnail:</label>
+        <input id="inv_Thumbnail" 
+        type="text" name="inv_thumbnail" value="<%- inv_thumbnail %>">
+
+
+        <label for="inv_price">Price:</label>
+        <input id="inv_price" 
+        type="number" name="inv_price" value="<%- inv_price %>">
+        
+        <label for="inv_miles">miles:</label>
+        <input id="inv_miles" 
+        type="number" name="inv_miles" value="<%- inv_miles %>" required>
+        
+
+        <label for="inv_color">Color:</label>
+        <input id="inv_color" 
+        type="text" name="inv_color" value="<%- inv_color %>" required>
+
+        <label for="classification_id">Vehicle classification:</label>
+        <%- select_form %>
+        
+        <button id="register_button" type="submit">Update Vehicle</button>
+        <input type="hidden" name="inv_id"
+        <% if(locals.inv_id) { %> value="<%= locals.inv_id %>"
+        <% } %>>
+
+</form>
+</div>

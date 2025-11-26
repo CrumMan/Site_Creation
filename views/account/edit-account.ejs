@@ -1,0 +1,50 @@
+<h1><%= title %></h1>
+
+<%- messages() %>
+<% if (errors) { %>
+  <ul class="notice">
+ <% errors.array().forEach(error => { %>
+   <li><%= error.msg %></li>
+<%  }) %>
+ </ul>
+<% } %>
+
+<div id="registration_form">
+    <form id="add_vehicle_form" action="/account/update-info" method="post">
+        
+        <label for="account_firstname">First Name:</label>
+        <input id="account_firstname" 
+        type="text" name="account_firstname" value="<%- account_firstname %>" required>
+        
+        <label for="account_lastname">Last Name:</label>
+        <input id="account_lastname" 
+        type="text" name="account_lastname" value="<%- account_lastname %>" required>
+        
+        <label for="account_email">Email:</label>
+        <input id="account_email" 
+        type="email" name="account_email" value="<%- account_email %>" required>
+        <button id="register_button" type="submit">Update Account Information</button>
+        <input type="hidden" name="account_id"
+        value="<%= account_id %>">
+        <input type="hidden" name="account_type"
+        value="<%= account_type %>">
+        
+    </form>
+
+    <!-- Second Form -->
+
+    <form id="edit_password_form" action="/account/edit-password" method="post">
+      <label for="password">Password:</label>
+      <input id="account_password" 
+        type="password"
+        name="account_password"  
+        pattern="^(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{12,}$" 
+        required>
+         <button id="register_button" type="submit">Update Password</button>
+        <input type="hidden" name="account_id"
+        value="<%= account_id %>">
+        <input type="hidden" name="account_type"
+        value="<%= account_type %>">
+        
+    </form>
+</div>

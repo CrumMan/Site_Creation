@@ -1,0 +1,10 @@
+<h1><%= title %></h1>
+
+<%- messages() %>
+
+<h2> Welcome <%- user.account_firstname %></h2>
+    <% if(user.account_type.toLowerCase() === 'employee' || user.account_type.toLowerCase() === 'admin' ) { %>
+    <a class="button" href="/inv"><h3>Inventory Management</h3></a>
+    <% } else { %>
+    <% } %>
+    <a class="button" href="/account/updateUser"><h3>Update User</h3></a>

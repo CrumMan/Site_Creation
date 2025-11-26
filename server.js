@@ -14,8 +14,13 @@ const indexRoute = require("./routes/index")
 const session = require("express-session")
 const pool = require('./database/')
 
+const cookieParser = require("cookie-parser")
 
 
+
+//body-parser middleware
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
 //Middleware
  app.use(session({
   store: new (require('connect-pg-simple')(session))({
@@ -27,9 +32,6 @@ const pool = require('./database/')
   saveUninitialized: true,
   name: 'sessionId',
 }))
-//body-parser middleware
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
 
 // Express Messages Middleware
 app.use(require('connect-flash')())
@@ -42,6 +44,10 @@ app.use(function(req, res, next){
 app.set ("view engine", "ejs")
 app.use(expressLayouts)
 app.set("layout","./layouts/layout")
+
+//JWT Check Middleware and Cookie
+app.use(cookieParser())
+app.use(Util.checkJWTToken)
 
 //routes
 app.use(static)
@@ -70,6 +76,8 @@ app.use(async (err, req, res, next) => {
     nav
   })
 })
+
+
 
 
 

@@ -1,6 +1,9 @@
 //Deliver login view
 const utilities = require('../utilities')
 const accountModel = require('../models/account-model')
+const bcrypt = require("bcryptjs")
+const jwt = require("jsonwebtoken")
+require("dotenv").config()
 
 async function buildLogin(req, res, next) {
   let nav = await utilities.getNav()
@@ -23,13 +26,30 @@ async function buildRegister(req,res,next){
 /* Process Registration */
 async function registerAccount(req, res) {
   let nav = await utilities.getNav()
-  const { account_firstname, account_lastname, account_email, account_password } = req.body
 
+  // Hash the password before storing
+  let hashedPassword
+  
+  const { account_firstname, account_lastname, account_email, account_password } = req.body
+  
+  try {
+    // regular password and cost (salt is generated automatically)
+    hashedPassword = await bcrypt.hashSync(account_password, 10)
+  } catch (error) {
+    req.flash("notice", 'Sorry, there was an error processing the registration.')
+    res.status(500).render("account/register", {
+      title: "Registration",
+      nav,
+      errors: null,
+    })
+  }
+
+  
   const regResult = await accountModel.registerAccount(
     account_firstname,
     account_lastname,
     account_email,
-    account_password
+    hashedPassword
   )
 
   if (regResult) {
@@ -50,4 +70,145 @@ async function registerAccount(req, res) {
   }
 }
 
-module.exports = { buildLogin, buildRegister, registerAccount }
+
+/* ****************************************
+ *  Process login request
+ * ************************************ */
+async function accountLogin(req, res) {
+  let nav = await utilities.getNav()
+  const { account_email, account_password } = req.body
+  const accountData = await accountModel.getAccountByEmail(account_email)
+  if (!accountData) {
+    req.flash("notice", "Please check your credentials and try again.")
+    res.status(400).render("account/login", {
+      title: "Login",
+      nav,
+      errors: null,
+      account_email,
+    })
+    return
+  }
+  try {
+    if (await bcrypt.compare(account_password, accountData.account_password)) {
+      delete accountData.account_password
+      
+      utilities.createAccessToken(accountData, res)
+
+      return res.redirect("/account/")
+    }
+    else {
+      req.flash("message notice", "Please check your credentials and try again.")
+      res.status(400).render("account/login", {
+        title: "Login",
+        nav,
+        errors: null,
+        account_email,
+      })
+    }
+  } catch (error) {
+    console.error(error)
+    throw new Error('Access Forbidden')
+  }
+}
+
+async function buildManagement(req, res){
+  try{
+    let nav = await utilities.getNav()
+    let user = res.locals.accountData
+
+    res.render("account/manage",{
+      nav,
+      title: "Account Management",
+      user
+      
+    })
+  }
+  catch (error){
+    const account_email = res.locals.accountData?.account_email || ''
+     req.flash("notice", "Please check your credentials and try again.")
+      res.status(400).render("account/login", {
+        title: "Login",
+        nav,
+        errors: null,
+        account_email,
+      })
+  }
+}
+
+async function logoutOfAccount(req, res){
+  req.flash('notice', 'You have been logged out.')
+  res.clearCookie('jwt')
+  req.session.destroy()
+  res.redirect("/account/login")
+}
+
+//edited
+async function editAccountView(req, res, next){
+    const user= res.locals.accountData
+    const nav = await utilities.getNav()
+ console.log('editAccountView - user:', user)
+    res.render("account/edit-account",{
+      title: "Edit Account",
+      nav,
+      errors: null,
+      account_id: user.account_id,
+      account_firstname: user.account_firstname,
+      account_lastname: user.account_lastname,
+      account_email: user.account_email,
+      account_type: user.account_type,
+    })
+}
+async function editAccountInfo(req,res,next){
+    const { 
+      account_id, 
+      account_firstname, 
+      account_lastname, 
+      account_email, 
+      account_type
+    } = req.body
+    const updateResult = await accountModel.updateAccountInfo(
+      account_id, 
+      account_firstname, 
+      account_lastname, 
+      account_email, 
+      account_type
+    )
+    if (updateResult) {
+       req.flash("notice", `Your account was successfully updated.`)
+       utilities.createAccessToken(updateResult, res)
+       res.redirect("/account")
+    }
+    else {
+      req.flash('notice', `Something went wrong`)
+      res.redirect("/account/updateUser")
+    }
+}
+
+async function editPassword(req, res, next) {
+   console.log('editPassword called', req.body)
+    let hashedPassword
+    const { account_id, 
+            account_password } = req.body
+     console.log('account_id:', account_id, 'account_password:', account_password)
+    try{
+      hashedPassword = await bcrypt.hashSync(account_password, 10)
+    }
+    catch (error) {
+    req.flash("notice", 'Sorry, there was an error changing the password.')
+    return res.redirect("/account/updateUser")
+    }
+    const updatedResult = await accountModel.updateUserPassword(
+      account_id,
+      hashedPassword
+    )
+    if (updatedResult) {
+      req.flash('notice', `Your password has been changed.`)
+      return res.redirect("/account")
+    }
+    else{
+      req.flash('notice', `Something went wrong changing your password.`)
+      res.redirect("/account/updateUser")
+    }
+}
+
+module.exports = { buildLogin, buildRegister, registerAccount, accountLogin, buildManagement, logoutOfAccount, editAccountView, editAccountInfo, editPassword }

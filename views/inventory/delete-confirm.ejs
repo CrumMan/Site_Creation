@@ -1,0 +1,27 @@
+<h1><%= title %></h1>
+
+<%- messages() %>
+<% if (errors) { %>
+  <ul class="notice">
+ <% errors.array().forEach(error => { %>
+   <li><%= error.msg %></li>
+<%  }) %>
+ </ul>
+<% } %>
+
+<div>
+    <h1>Vehicle Being deleted Info:</h1>
+    <ul>
+      <li>Make: <%= inv_make %></li>
+      <li>Model: <%= inv_model %></li>
+      <li>Year: <%= inv_year %></li>
+      <li>Color: <%= inv_color %></li>
+      <li>Miles: <%= inv_miles %></li>
+      <li>Price: $<%= inv_price %></li>
+    </ul>
+    <form action="/inv/delete" method="post">
+
+      <button id="register_button" type="submit">Delete Vehicle</button>
+      <input type="hidden" name="inv_id" value="<%- inv_id %>">
+
+</form>
