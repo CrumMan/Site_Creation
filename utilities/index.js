@@ -137,6 +137,10 @@ Util.createAccessToken = (accountData, res) => {
  }
 
  Util.checkCredentials = async (req, res, next) => {
+  if(!res.locals.accountData){
+    req.flash("notice", "Please log in.")
+    return res.redirect("/account/login")
+  }
   if(res.locals.accountData.account_type.toLowerCase()=== 'employee' || res.locals.accountData.account_type.toLowerCase()=== 'admin' ){
     next()
   }
