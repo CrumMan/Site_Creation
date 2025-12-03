@@ -82,4 +82,43 @@ async function checkExistingEmail(account_email){
   }
 }
 
-module.exports = {registerAccount, getAccountByEmail, checkExistingEmail, updateAccountInfo,updateUserPassword}
+async function getAllAccounts(){
+  try{
+    const sql = `SELECT * from public.account`
+    const result = await pool.query(sql)
+    return result.rows
+  }
+  catch(error){
+    console.error("Account Error:", error)
+    return null;
+  }
+}
+async function getAccountById(account_id){
+  try{
+  const sql = `SELECT * FROM public.account WHERE account_id = ${account_id}`
+  const result = await pool.query(sql)
+  return result.rows[0]
+  }
+  catch(error){
+    console.error("Account Error:", error)
+    return null;
+  }
+}
+
+async function changeCredential(account_id, account_type){
+  try{
+    const sql =  `UPDATE public.account
+                 SET account_type = $1
+                 WHERE account_id = $2 
+                 RETURNING *`
+    const result = await pool.query(sql, [account_type, account_id])
+    return result.rows[0]
+  }
+  catch(error){
+    console.error("Account Error:", error)
+    return null;
+  
+  }
+}
+
+module.exports = {registerAccount, getAccountByEmail, checkExistingEmail, updateAccountInfo,updateUserPassword, getAllAccounts, getAccountById, changeCredential}

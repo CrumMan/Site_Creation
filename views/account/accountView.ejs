@@ -1,0 +1,18 @@
+<h1><%= title %></h1>
+
+<%- messages() %>
+<% if (errors) { %>
+  <ul class="notice">
+ <% errors.array().forEach(error => { %>
+   <li><%= error.msg %></li>
+<%  }) %>
+ </ul>
+<% } %>
+<div id="allAccounts">
+<%  users.forEach(user => { %>
+
+        <a href="/account/editCredential?id=<%= user.account_id %>" data-id="<%= user.account_id %>">
+            <%= user.account_firstname %> <%= user.account_lastname %>
+        </a><br>
+        <% }); %>
+</div>

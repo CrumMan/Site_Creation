@@ -153,6 +153,39 @@ Util.createAccessToken = (accountData, res) => {
     })
   }
  }
+ Util.createSelectForm = async (account_data, req, res) => {
+  if(!res.locals.accountData){
+    req.flash("notice", "Please log in.")
+    return res.redirect("/account/login")
+  }
+  if(res.locals.accountData.account_type.toLowerCase()=== 'employee' && account_data.account_type.toLowerCase() !== 'admin' && account_data.account_type.toLowerCase() !== 'employee'){
+    return `<select name="account_type" id="account_type" required>
+            <option value="" selected disabled>--Select--</option>
+            <option value="Client">Client</option>
+            <option value="Employee">Employee</option>
+        </select>`
+  }
+  else if(res.locals.accountData.account_type.toLowerCase()=== 'admin'){
+         return `<select name="account_type" id="account_type" required>
+              <option value="" selected disabled>--Select--</option>
+              <option value="Client">Client</option>
+              <option value="Employee">Employee</option>
+              <option value="Admin">Admin</option>
+        </select>`
+  }
+  else return `<p class="notice">You do not have permission to edit this account's credentials.</p>`
+ }
+ Util.createUserList = async (users, res)=>{
+   const newusers=[]
+  if(res.locals.accountData.account_type.toLowerCase()=== 'employee'){
+    users.forEach(user => {
+      if (user.account_type.toLowerCase() === 'client')
+        newusers.push(user)
+    });
+    return newusers
+  }
+  else{return users}
+ }
 
 
 module.exports = Util

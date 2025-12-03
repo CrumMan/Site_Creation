@@ -34,6 +34,12 @@ router.post('/edit-password', utilities.checkLogin,
   regValidate.passwordEditRules(), regValidate.checkEditPasswordRules,
   utilities.handleErrors(accountController.editPassword))
 
+router.get('/credentialView', utilities.checkCredentials, utilities.checkLogin, utilities.handleErrors(accountController.selectAccountView))
+
+router.get('/editCredential', utilities.checkCredentials, utilities.checkLogin, utilities.handleErrors(accountController.createCredentialEdit) )
+
+router.post('/editCredential', utilities.checkCredentials, utilities.checkLogin, utilities.handleErrors(accountController.editCredentials))
+
 router.get('/logout', accountController.logoutOfAccount)
 //
 module.exports = router

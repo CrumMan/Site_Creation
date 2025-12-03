@@ -157,6 +157,7 @@ async function editAccountView(req, res, next){
       account_type: user.account_type,
     })
 }
+
 async function editAccountInfo(req,res,next){
     const { 
       account_id, 
@@ -208,4 +209,60 @@ async function editPassword(req, res, next) {
     }
 }
 
-module.exports = { buildLogin, buildRegister, registerAccount, accountLogin, buildManagement, logoutOfAccount, editAccountView, editAccountInfo, editPassword }
+async function selectAccountView(req, res, next){
+  try{
+    const nav = await utilities.getNav()
+    const userList = await accountModel.getAllAccounts()   
+    const users = await utilities.createUserList(userList, res)
+
+    res.render("account/accountView", 
+    {
+      title: "Which account would you like to change credentials?",
+      nav,
+      users,
+      errors: null,
+    })
+  }
+  catch(error){
+    req.flash('notice', "selectAccountView error:", error)
+    res.redirect('/')
+  }
+}
+
+async function createCredentialEdit(req, res, next) {
+  const account_id = req.query.id
+  const nav = await utilities.getNav()
+  const accountData = await accountModel.getAccountById(account_id)
+  const selectform = await utilities.createSelectForm(accountData, req, res)
+  console.log(`Account_id: ${account_id} \n Account Data: ${accountData}\nselectForm: ${selectform}`)
+
+  res.render("account/accountClassForm", {
+    nav,
+    title: "Edit User Classification",
+    accountData,
+    selectform,
+    errors: null,
+  })
+}
+
+async function editCredentials(req,res,next) {
+  console.log('full req body', req.body)
+
+  const {account_id, account_type}=req.body
+
+  
+  console.log('account_id:', account_id, '| Type:', typeof account_id)
+  console.log('account_type:', account_type, '| Type:', typeof account_type)
+
+  const updatedResult = await accountModel.changeCredential(account_id, account_type)
+  if(updatedResult){
+    req.flash('notice', 'User credentials have been changed.')
+    return res.redirect('/account')
+  }
+  else{
+    req.flash('notice', 'Issue with credential change.')
+    res.redirect(`/account/editCredential?id=${account_id}`)
+  }
+}
+
+module.exports = { buildLogin, buildRegister, registerAccount, accountLogin, buildManagement, logoutOfAccount, editAccountView, editAccountInfo, editPassword, selectAccountView, createCredentialEdit, editCredentials }

@@ -1,0 +1,19 @@
+<h1><%= title %></h1>
+
+<%- messages() %>
+<% if (errors) { %>
+  <ul class="notice">
+ <% errors.array().forEach(error => { %>
+   <li><%= error.msg %></li>
+<%  }) %>
+ </ul>
+<% } %>
+<div id="allAccounts">
+
+    <form action="/account/editCredential" method="post">
+    <h3><%= accountData.account_firstname %> <%= accountData.account_lastname %>  <%- selectform %></h3>
+    <button type="submit">Submit</button>
+    <input type="hidden" name="account_id" value="<%= accountData.account_id %>">
+    </form>
+
+</div>
