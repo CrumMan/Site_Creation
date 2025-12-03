@@ -234,7 +234,6 @@ async function createCredentialEdit(req, res, next) {
   const nav = await utilities.getNav()
   const accountData = await accountModel.getAccountById(account_id)
   const selectform = await utilities.createSelectForm(accountData, req, res)
-  console.log(`Account_id: ${account_id} \n Account Data: ${accountData}\nselectForm: ${selectform}`)
 
   res.render("account/accountClassForm", {
     nav,
@@ -249,10 +248,6 @@ async function editCredentials(req,res,next) {
   console.log('full req body', req.body)
 
   const {account_id, account_type}=req.body
-
-  
-  console.log('account_id:', account_id, '| Type:', typeof account_id)
-  console.log('account_type:', account_type, '| Type:', typeof account_type)
 
   const updatedResult = await accountModel.changeCredential(account_id, account_type)
   if(updatedResult){

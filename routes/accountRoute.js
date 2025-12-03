@@ -38,7 +38,7 @@ router.get('/credentialView', utilities.checkCredentials, utilities.checkLogin, 
 
 router.get('/editCredential', utilities.checkCredentials, utilities.checkLogin, utilities.handleErrors(accountController.createCredentialEdit) )
 
-router.post('/editCredential', utilities.checkCredentials, utilities.checkLogin, utilities.handleErrors(accountController.editCredentials))
+router.post('/editCredential', utilities.checkCredentials, utilities.checkLogin, regValidate.credentialEditRules(), regValidate.checkCredentialEdit, utilities.handleErrors(accountController.editCredentials))
 
 router.get('/logout', accountController.logoutOfAccount)
 //

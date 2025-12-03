@@ -168,6 +168,36 @@ validate.loginRules = () => {
         .withMessage("Please provide a password."), // on error this message is sent.
         ]
 }
+
+validate.credentialEditRules = () => {
+  return [
+    body("account_type")
+        .trim()
+        .escape()
+        .notEmpty()
+        .isIn(['Client', 'Employee', 'Admin'])
+        .withMessage("Please provide valid account type."),
+    body("account_id")
+        .trim()
+        .notEmpty()
+        .isInt()
+        .withMessage("Account ID is required"),
+  ]
+}
+
+validate.checkCredentialEdit = async(req,res,next) =>{
+  const{account_type, account_id} = req.body
+  let errors =[]
+  errors = validationResult(req)
+  if (!errors.isEmpty()){
+    errors.array().forEach(error => {
+      req.flash('notice', error.msg)
+    })
+    return res.redirect(`/account/editCredential?id=${account_id}`)
+  }
+  next();
+}
+
 validate.checkLoginData = async (req,res,next) => {
   const {account_email, account_password} = req.body
   let errors = []
