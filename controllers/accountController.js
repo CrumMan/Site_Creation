@@ -231,11 +231,16 @@ async function selectAccountView(req, res, next){
 }
 
 async function createCredentialEdit(req, res, next) {
-  const account_id = req.query.id
+  const account_id = await req.query.id
+  const user_id =  await res.locals.accountData.account_id
   const nav = await utilities.getNav()
   const accountData = await accountModel.getAccountById(account_id)
   const selectform = await utilities.createSelectForm(accountData, req, res)
 
+  if (user_id === parseInt(account_id)){
+    req.flash('notice', 'You cannot Edit your own account credentials')
+    return res.redirect("/account/")
+  }
   res.render("account/accountClassForm", {
     nav,
     title: "Edit User Classification",
