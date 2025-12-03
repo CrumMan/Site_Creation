@@ -214,10 +214,11 @@ async function selectAccountView(req, res, next){
     const nav = await utilities.getNav()
     const userList = await accountModel.getAllAccounts()   
     const users = await utilities.createUserList(userList, res)
-
+    const account_id = await res.locals.accountData.account_id
     res.render("account/accountView", 
     {
       title: "Which account would you like to change credentials?",
+      account_id,
       nav,
       users,
       errors: null,

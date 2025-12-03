@@ -9,10 +9,10 @@
  </ul>
 <% } %>
 <div id="allAccounts">
-<%  users.forEach(user => { %>
+<%  users.forEach(user => { if (user.account_id !== account_id){ %>
 
         <a href="/account/editCredential?id=<%= user.account_id %>" data-id="<%= user.account_id %>">
             <%= user.account_firstname %> <%= user.account_lastname %>
         </a><br>
-        <% }); %>
+        <% } }); %>
 </div>
